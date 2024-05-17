@@ -16,6 +16,7 @@ openpyxl = "^3.1.2"
 joblib = "^1.4.0"
 xgboost = "^2.0.3"
 imblearn = "^0.0"
+statsmodels = "^0.14.2"
 
 
 [tool.poetry.group.dev.dependencies]
