@@ -53,7 +53,13 @@ SELECT
     END AS ENTRE_15_18_ANOS,
     -- p.DT_NASC,
     p.TP_SEXO,
-    sinais_vitais.*
+    sinais_vitais.valor_sa AS "SATURACAO",
+    sinais_vitais.valor_dor AS "DOR",
+    sinais_vitais.valor_fc AS "FREQUENCIA_CARDIACA",
+    sinais_vitais.valor_fr AS "FREQUENCIA_RESPIRATORIA",
+    sinais_vitais.valor_peso AS "PESO",
+    sinais_vitais.valor_temp AS "TEMPERATURA",
+    sinais_vitais.valor_pp as "PERFUSAO_PERIFERICA"
 FROM paciente_interpolacao MP10
 JOIN paciente_interpolacao NO ON MP10.id_coordenada = NO.id_coordenada
 JOIN paciente_interpolacao NO2 ON MP10.id_coordenada = NO2.id_coordenada
@@ -62,7 +68,7 @@ JOIN paciente_interpolacao TEMP ON MP10.id_coordenada = TEMP.id_coordenada
 JOIN paciente_interpolacao UR ON MP10.id_coordenada = UR.id_coordenada
 JOIN paciente_coordenadas PC ON MP10.id_coordenada = PC.id
 JOIN paciente p on PC.id_paciente = p.ID
-JOIN (SELECT DISTINCT p.CD_ATENDIMENTO
+join (select distinct p.CD_ATENDIMENTO
                , psv_dor.DS_SINAL_VITAL as "ds_dor"
                , psv_dor.valor as "valor_dor"
                , psv_fc.DS_SINAL_VITAL as "ds_fc"
@@ -77,7 +83,7 @@ JOIN (SELECT DISTINCT p.CD_ATENDIMENTO
                , psv_peso.valor as "valor_peso"
                , psv_temp.DS_SINAL_VITAL as "ds_temp"
                , psv_temp.valor as "valor_temp"
- FROM paciente p,
+ from paciente p,
       paciente_sinais_vitais psv_dor,
       paciente_sinais_vitais psv_fc,
       paciente_sinais_vitais psv_fr,
@@ -85,20 +91,20 @@ JOIN (SELECT DISTINCT p.CD_ATENDIMENTO
       paciente_sinais_vitais psv_sa,
       paciente_sinais_vitais psv_peso,
       paciente_sinais_vitais psv_temp
- WHERE p.CD_ATENDIMENTO = psv_dor.CD_ATENDIMENTO
-   AND psv_dor.DS_SINAL_VITAL = 'DOR'
-   AND p.CD_ATENDIMENTO = psv_fc.CD_ATENDIMENTO
-   AND psv_fc.DS_SINAL_VITAL = 'FREQUÊNCIA CARDÍACA'
-   AND p.CD_ATENDIMENTO = psv_fr.CD_ATENDIMENTO
-   AND psv_fr.DS_SINAL_VITAL = 'FREQUÊNCIA RESPIRATÓRIA'
-   AND p.CD_ATENDIMENTO = psv_pp.CD_ATENDIMENTO
-   AND psv_pp.DS_SINAL_VITAL = 'PERFUSAO PERIFERICA'
-   AND p.CD_ATENDIMENTO = psv_peso.CD_ATENDIMENTO
-   AND psv_peso.DS_SINAL_VITAL = 'PESO'
-   AND p.CD_ATENDIMENTO = psv_sa.CD_ATENDIMENTO
-   AND psv_sa.DS_SINAL_VITAL = 'SATURAÇÃO (AR AMBIENTE)'
-   AND p.CD_ATENDIMENTO = psv_temp.CD_ATENDIMENTO
-   AND psv_temp.DS_SINAL_VITAL = 'TEMPERATURA') sinais_vitais
+ where p.CD_ATENDIMENTO = psv_dor.CD_ATENDIMENTO
+   and psv_dor.DS_SINAL_VITAL = 'DOR'
+   and p.CD_ATENDIMENTO = psv_fc.CD_ATENDIMENTO
+   and psv_fc.DS_SINAL_VITAL = 'FREQUÊNCIA CARDÍACA'
+   and p.CD_ATENDIMENTO = psv_fr.CD_ATENDIMENTO
+   and psv_fr.DS_SINAL_VITAL = 'FREQUÊNCIA RESPIRATÓRIA'
+   and p.CD_ATENDIMENTO = psv_pp.CD_ATENDIMENTO
+   and psv_pp.DS_SINAL_VITAL = 'PERFUSAO PERIFERICA'
+   and p.CD_ATENDIMENTO = psv_peso.CD_ATENDIMENTO
+   and psv_peso.DS_SINAL_VITAL = 'PESO'
+   and p.CD_ATENDIMENTO = psv_sa.CD_ATENDIMENTO
+   and psv_sa.DS_SINAL_VITAL = 'SATURAÇÃO (AR AMBIENTE)'
+   and p.CD_ATENDIMENTO = psv_temp.CD_ATENDIMENTO
+   and psv_temp.DS_SINAL_VITAL = 'TEMPERATURA') sinais_vitais
 WHERE
     MP10.poluente = 'MP10'
     AND NO.poluente = 'NO'
